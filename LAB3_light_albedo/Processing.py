@@ -48,10 +48,10 @@ def read_intensity_by_pixel(photo_name, plot_name, lamp, surface):
 
     plt.plot(rgb, label=['r', 'g', 'b'])
     plt.plot(luma, 'w', label='I')
-    plt.ylim(ymin=0, ymax=max(luma+rgb[:,0]++rgb[:,1]+rgb[:,2]))
     plt.legend()
 
-    plt.imshow(background, origin='lower', aspect='auto')
+    plt.imshow(background, origin='lower')
+
     plt.savefig(plot_name)
 
 
@@ -77,9 +77,10 @@ def read_intensity_by_length(photo_name, lamp, surface):
     ax.xaxis.set_minor_locator(MultipleLocator(10))
     ax.yaxis.set_minor_locator(MultipleLocator(5))
     plt.grid(color="grey")
-    plt.ylim(ymin=0, ymax=200)
+    plt.ylim(ymin=0, ymax=max(luma.max(), rgb[::].max()) + 5)
     plt.plot(x, rgb, label=['r', 'g', 'b'])
     plt.plot(x, luma, 'w', label='I')
+    plt.legend()
 
 
 def read_intensity_by_length_multiple(photo_names, lamps, surfaces):
@@ -100,12 +101,16 @@ def read_intensity_by_length_multiple(photo_names, lamps, surfaces):
     x = np.linspace(first_pixel, first_pixel + (X_RIGHT - X_LEFT) * k, X_RIGHT - X_LEFT)
 
     plt.xlim(xmin=x.min(), xmax=x.max())
-    plt.ylim(ymin=0, ymax=25)
+    y_max = 0
     for photo_name, lamp, surface in zip(photo_names, lamps, surfaces):
         if lamp == "ртутная лампа":
             continue
         rgb, luma = get_intensity_map(photo_name)
+        y_max = max(y_max, luma.max())
         plt.plot(x, luma, label=surface, color=COLORS[surface])
+
+    plt.ylim(ymin=0, ymax=y_max + 5)
+
     plt.legend()
 
 
