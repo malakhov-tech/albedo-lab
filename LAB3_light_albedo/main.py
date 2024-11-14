@@ -1,0 +1,8 @@
+from Brighness_by_pixels import draw_brightness_by_pixels, draw_brightness_by_length, draw_brightness_by_length_all
+from Processing import get_coordinates_mercury
+from filing import get_pictures
+
+draw_brightness_by_pixels()
+
+draw_brightness_by_length()
+draw_brightness_by_length_all()
